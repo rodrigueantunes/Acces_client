@@ -25,18 +25,8 @@ Pour faire fonctionner cette application, vous devez disposer des éléments sui
 
 ## Installation
 
-### Étapes pour cloner et exécuter le projet :
-
-1. **Cloner le repository** :
-
-   Ouvrez votre terminal et exécutez la commande suivante pour cloner ce repository :
-
-   ```bash
-   git clone https://github.com/rodrigueantunes/acces-client.git
-
-2. Ouvrez le projet dans Visual Studio ou tout autre IDE compatible avec .NET.
-3. Assurez-vous que le répertoire `C:\Application\Clients\` existe et contient des sous-répertoires et des fichiers pour tester l'application.
-4. Compilez et exécutez l'application.
+1. Téléchargez la dernière Release
+2. Exécutez le programme.
 
 ## Fonctionnement de l'application
 
