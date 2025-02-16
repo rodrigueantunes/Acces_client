@@ -3,14 +3,8 @@
     partial class Form1
     {
         /// <summary>
-        ///  Required designer variable.
+        /// Nettoyage des ressources utilisées.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,15 +14,18 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
+        #region Code généré par le Concepteur Windows Form
         private void InitializeComponent()
         {
-            flowLayoutPanel1 = new FlowLayoutPanel();
+            flowLayoutPanelClients = new FlowLayoutPanel();
+            flowLayoutPanelAny = new FlowLayoutPanel();
+            flowLayoutPanelRDS = new FlowLayoutPanel();
+            flowLayoutPanelVPN = new FlowLayoutPanel();
+            labelAny = new Label();
+            labelRDS = new Label();
+            labelVPN = new Label();
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
             pictureBox3 = new PictureBox();
@@ -39,84 +36,151 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             SuspendLayout();
             // 
-            // flowLayoutPanel1
+            // flowLayoutPanelClients
             // 
-            flowLayoutPanel1.BackColor = Color.Transparent;
-            flowLayoutPanel1.Location = new Point(86, 94);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(619, 236);
-            flowLayoutPanel1.TabIndex = 0;
+            flowLayoutPanelClients.Location = new Point(0, 131);
+            flowLayoutPanelClients.Name = "flowLayoutPanelClients";
+            flowLayoutPanelClients.Size = new Size(214, 379);
+            flowLayoutPanelClients.TabIndex = 0;
+            // 
+            // flowLayoutPanelAny
+            // 
+            flowLayoutPanelAny.AutoScroll = true;
+            flowLayoutPanelAny.BackColor = SystemColors.ActiveCaption;
+            flowLayoutPanelAny.BackgroundImageLayout = ImageLayout.Zoom;
+            flowLayoutPanelAny.BorderStyle = BorderStyle.FixedSingle;
+            flowLayoutPanelAny.Location = new Point(220, 147);
+            flowLayoutPanelAny.Name = "flowLayoutPanelAny";
+            flowLayoutPanelAny.Size = new Size(200, 363);
+            flowLayoutPanelAny.TabIndex = 2;
+            // 
+            // flowLayoutPanelRDS
+            // 
+            flowLayoutPanelRDS.AutoScroll = true;
+            flowLayoutPanelRDS.BackColor = SystemColors.ActiveCaption;
+            flowLayoutPanelRDS.BackgroundImageLayout = ImageLayout.Zoom;
+            flowLayoutPanelRDS.BorderStyle = BorderStyle.FixedSingle;
+            flowLayoutPanelRDS.Location = new Point(430, 147);
+            flowLayoutPanelRDS.Name = "flowLayoutPanelRDS";
+            flowLayoutPanelRDS.Size = new Size(200, 363);
+            flowLayoutPanelRDS.TabIndex = 4;
+            // 
+            // flowLayoutPanelVPN
+            // 
+            flowLayoutPanelVPN.AutoScroll = true;
+            flowLayoutPanelVPN.BackColor = SystemColors.ActiveCaption;
+            flowLayoutPanelVPN.BackgroundImageLayout = ImageLayout.Zoom;
+            flowLayoutPanelVPN.BorderStyle = BorderStyle.FixedSingle;
+            flowLayoutPanelVPN.Location = new Point(640, 147);
+            flowLayoutPanelVPN.Name = "flowLayoutPanelVPN";
+            flowLayoutPanelVPN.Size = new Size(200, 363);
+            flowLayoutPanelVPN.TabIndex = 6;
+            // 
+            // labelAny
+            // 
+            labelAny.AutoSize = true;
+            labelAny.Font = new Font("Arial", 10F, FontStyle.Bold);
+            labelAny.Location = new Point(220, 30);
+            labelAny.Name = "labelAny";
+            labelAny.Size = new Size(66, 16);
+            labelAny.TabIndex = 1;
+            labelAny.Text = "Anydesk";
+            // 
+            // labelRDS
+            // 
+            labelRDS.AutoSize = true;
+            labelRDS.Font = new Font("Arial", 10F, FontStyle.Bold);
+            labelRDS.Location = new Point(430, 30);
+            labelRDS.Name = "labelRDS";
+            labelRDS.Size = new Size(134, 16);
+            labelRDS.TabIndex = 3;
+            labelRDS.Text = "Bureau à distance";
+            // 
+            // labelVPN
+            // 
+            labelVPN.AutoSize = true;
+            labelVPN.Font = new Font("Arial", 10F, FontStyle.Bold);
+            labelVPN.Location = new Point(640, 30);
+            labelVPN.Name = "labelVPN";
+            labelVPN.Size = new Size(35, 16);
+            labelVPN.TabIndex = 5;
+            labelVPN.Text = "VPN";
             // 
             // pictureBox1
             // 
-            pictureBox1.BackgroundImage = Properties.Resources.volume_software_sans_detour_h80;
-            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Dock = DockStyle.Left;
-            pictureBox1.Location = new Point(0, 0);
+            pictureBox1.BackgroundImage = Properties.Resources.any_bg;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox1.Location = new Point(220, 49);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(80, 450);
-            pictureBox1.TabIndex = 1;
+            pictureBox1.Size = new Size(200, 92);
+            pictureBox1.TabIndex = 7;
             pictureBox1.TabStop = false;
             // 
             // pictureBox2
             // 
-            pictureBox2.BackgroundImage = Properties.Resources.volume_software_sans_detour_h80;
-            pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox2.Dock = DockStyle.Right;
-            pictureBox2.Location = new Point(720, 0);
+            pictureBox2.BackgroundImage = Properties.Resources.rds_bg;
+            pictureBox2.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox2.Location = new Point(430, 49);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(80, 450);
-            pictureBox2.TabIndex = 2;
+            pictureBox2.Size = new Size(200, 92);
+            pictureBox2.TabIndex = 8;
             pictureBox2.TabStop = false;
             // 
             // pictureBox3
             // 
-            pictureBox3.BackgroundImage = Properties.Resources.volume_software_sans_detour_h80;
-            pictureBox3.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox3.Dock = DockStyle.Bottom;
-            pictureBox3.Location = new Point(80, 419);
+            pictureBox3.BackgroundImage = Properties.Resources.vpn_bg;
+            pictureBox3.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox3.Location = new Point(640, 49);
             pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(640, 31);
-            pictureBox3.TabIndex = 3;
+            pictureBox3.Size = new Size(200, 92);
+            pictureBox3.TabIndex = 9;
             pictureBox3.TabStop = false;
             // 
             // pictureBox4
             // 
             pictureBox4.BackgroundImage = Properties.Resources.volume_software_sans_detour_h80;
             pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox4.Dock = DockStyle.Top;
-            pictureBox4.Location = new Point(80, 0);
+            pictureBox4.Location = new Point(0, 2);
             pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(640, 31);
-            pictureBox4.TabIndex = 4;
+            pictureBox4.Size = new Size(214, 123);
+            pictureBox4.TabIndex = 10;
             pictureBox4.TabStop = false;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources.KOLO_VoluPack;
-            BackgroundImageLayout = ImageLayout.Zoom;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(860, 530);
             Controls.Add(pictureBox4);
             Controls.Add(pictureBox3);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
-            Controls.Add(flowLayoutPanel1);
-            DoubleBuffered = true;
+            Controls.Add(flowLayoutPanelClients);
+            Controls.Add(labelAny);
+            Controls.Add(flowLayoutPanelAny);
+            Controls.Add(labelRDS);
+            Controls.Add(flowLayoutPanelRDS);
+            Controls.Add(labelVPN);
+            Controls.Add(flowLayoutPanelVPN);
             Name = "Form1";
-            Text = "Accès Client / VSW - Antunes Rodrigue";
+            Text = "Accès Client";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
+
 
         #endregion
 
-        private FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelClients;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelAny;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelRDS;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelVPN;
+        private System.Windows.Forms.Label labelAny;
+        private System.Windows.Forms.Label labelRDS;
+        private System.Windows.Forms.Label labelVPN;
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private PictureBox pictureBox3;

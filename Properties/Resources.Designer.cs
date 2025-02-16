@@ -63,6 +63,34 @@ namespace Accès_client.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap any_bg {
+            get {
+                object obj = ResourceManager.GetObject("any_bg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        internal static System.Drawing.Bitmap rds_bg
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("rds_bg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        internal static System.Drawing.Bitmap vpn_bg
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("vpn_bg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap KOLO_VoluPack {
             get {
                 object obj = ResourceManager.GetObject("KOLO_VoluPack", resourceCulture);

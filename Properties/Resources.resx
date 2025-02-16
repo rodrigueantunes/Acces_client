@@ -124,4 +124,13 @@
   <data name="KOLO_VoluPack" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\KOLO_VoluPack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="any_bg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\any_bg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rds_bg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rds_bg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="vpn_bg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\vpn_bg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
