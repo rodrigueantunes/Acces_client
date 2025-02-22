@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "QJH0b/lkb+E=",
+  "dgSpecHash": "ooe/OgjD7SE=",
   "success": true,
   "projectFilePath": "C:\\Application\\Acces_client\\Accès_client.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Antunes Rodrigue\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -20,6 +20,7 @@
         private void InitializeComponent()
         {
             flowLayoutPanelClients = new FlowLayoutPanel();
+            pictureBox4 = new PictureBox();
             flowLayoutPanelAny = new FlowLayoutPanel();
             flowLayoutPanelRDS = new FlowLayoutPanel();
             flowLayoutPanelVPN = new FlowLayoutPanel();
@@ -29,19 +30,29 @@
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
             pictureBox3 = new PictureBox();
-            pictureBox4 = new PictureBox();
+            visualiserRdsButton = new Button();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             SuspendLayout();
             // 
             // flowLayoutPanelClients
             // 
             flowLayoutPanelClients.Location = new Point(0, 131);
             flowLayoutPanelClients.Name = "flowLayoutPanelClients";
-            flowLayoutPanelClients.Size = new Size(214, 379);
+            flowLayoutPanelClients.Size = new Size(214, 321);
             flowLayoutPanelClients.TabIndex = 0;
+            // 
+            // pictureBox4
+            // 
+            pictureBox4.BackgroundImage = Properties.Resources.volume_software_sans_detour_h80;
+            pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox4.Location = new Point(0, 0);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(214, 123);
+            pictureBox4.TabIndex = 10;
+            pictureBox4.TabStop = false;
             // 
             // flowLayoutPanelAny
             // 
@@ -136,19 +147,20 @@
             pictureBox3.TabIndex = 9;
             pictureBox3.TabStop = false;
             // 
-            // pictureBox4
+            // visualiserRdsButton
             // 
-            pictureBox4.BackgroundImage = Properties.Resources.volume_software_sans_detour_h80;
-            pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox4.Location = new Point(0, 2);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(214, 123);
-            pictureBox4.TabIndex = 10;
-            pictureBox4.TabStop = false;
+            visualiserRdsButton.BackColor = SystemColors.Info;
+            visualiserRdsButton.Location = new Point(0, 458);
+            visualiserRdsButton.Name = "visualiserRdsButton";
+            visualiserRdsButton.Size = new Size(214, 40);
+            visualiserRdsButton.TabIndex = 13;
+            visualiserRdsButton.Text = "Gestion Compte RDS";
+            visualiserRdsButton.UseVisualStyleBackColor = false;
+            visualiserRdsButton.Click += VisualiserRdsButton_Click;
             // 
             // Form1
             // 
-            ClientSize = new Size(860, 530);
+            ClientSize = new Size(860, 550);
             Controls.Add(pictureBox4);
             Controls.Add(pictureBox3);
             Controls.Add(pictureBox2);
@@ -160,30 +172,31 @@
             Controls.Add(flowLayoutPanelRDS);
             Controls.Add(labelVPN);
             Controls.Add(flowLayoutPanelVPN);
+            Controls.Add(visualiserRdsButton);
             Name = "Form1";
-            Text = "Accès Client";
+            Text = "Accès Client - Antunes Rodrigue / VSW";
             Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
-
-
         #endregion
 
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelClients;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelAny;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelRDS;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelVPN;
-        private System.Windows.Forms.Label labelAny;
-        private System.Windows.Forms.Label labelRDS;
-        private System.Windows.Forms.Label labelVPN;
+        private FlowLayoutPanel flowLayoutPanelClients;
+        private FlowLayoutPanel flowLayoutPanelAny;
+        private FlowLayoutPanel flowLayoutPanelRDS;
+        private FlowLayoutPanel flowLayoutPanelVPN;
+        private Label labelAny;
+        private Label labelRDS;
+        private Label labelVPN;
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private PictureBox pictureBox3;
         private PictureBox pictureBox4;
+        private Button visualiserRdsButton;  // Nouveau bouton
+
     }
 }

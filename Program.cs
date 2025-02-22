@@ -8,10 +8,14 @@ namespace Accès_client
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            // Initialiser les configurations de l'application
+            Application.EnableVisualStyles(); // Appliquer les styles visuels
+            Application.SetCompatibleTextRenderingDefault(false); // Configurer le rendu de texte
+
+            // Lancer Form1
+            Application.Run(new Form1()); // Votre formulaire principal
+
+            // ApplicationConfiguration.Initialize(); // Cette ligne peut être supprimée, elle semble ne pas être nécessaire
         }
     }
 }

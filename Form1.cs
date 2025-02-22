@@ -1,22 +1,105 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Accès_client
 {
     public partial class Form1 : Form
     {
+        // Dictionnaire pour stocker les informations de connexion par fichier RDS, y compris l'IP
+        private Dictionary<string, (string Ip, string User, string Password)> rdsCredentials = new Dictionary<string, (string, string, string)>();
+
         public Form1()
         {
             InitializeComponent();
             LoadDirectories();
+           
+        }
+
+        public static class Prompt
+    {
+        public static string ShowDialog(string text, string caption)
+        {
+            Form prompt = new Form()
+            {
+                Width = 300,
+                Height = 150,
+                Text = caption,
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label textLabel = new Label() { Left = 20, Top = 20, Text = text };
+            TextBox textBox = new TextBox() { Left = 20, Top = 50, Width = 240 };
+            Button confirmation = new Button() { Text = "OK", Left = 20, Width = 100, Top = 80, DialogResult = DialogResult.OK };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+            prompt.Controls.Add(textLabel);
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.AcceptButton = confirmation;
+
+            return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+        }
+    }
+        public class EncryptionHelper
+        {
+            private static readonly string key = "1234567890123456"; // Clé de 16 caractères pour AES-128
+            private static readonly string iv = "1234567890123456"; // IV de 16 caractères pour AES
+
+            // Méthode pour chiffrer un texte
+            public static string Encrypt(string plainText)
+            {
+                using (Aes aesAlg = Aes.Create())
+                {
+                    aesAlg.Key = Encoding.UTF8.GetBytes(key);
+                    aesAlg.IV = Encoding.UTF8.GetBytes(iv);
+
+                    ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+                    using (MemoryStream msEncrypt = new MemoryStream())
+                    {
+                        using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                        {
+                            using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                            {
+                                swEncrypt.Write(plainText);
+                            }
+                        }
+                        return Convert.ToBase64String(msEncrypt.ToArray());
+                    }
+                }
+            }
+
+            // Méthode pour déchiffrer un texte
+            public static string Decrypt(string cipherText)
+            {
+                using (Aes aesAlg = Aes.Create())
+                {
+                    aesAlg.Key = Encoding.UTF8.GetBytes(key);
+                    aesAlg.IV = Encoding.UTF8.GetBytes(iv);
+
+                    ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+                    using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText)))
+                    {
+                        using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                        {
+                            using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                            {
+                                return srDecrypt.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadDirectories();
+            LoadRdsCredentials(); // Charger les informations de connexion RDS
         }
 
         private void LoadDirectories()
@@ -113,26 +196,163 @@ namespace Accès_client
                 {
                     flowLayoutPanelVPN.Controls.Add(button);
                 }
-                else
-                {
-                    // Si le fichier ne commence pas par "Any-", "RDS-" ou "VPN-", on ne l'ajoute à aucun panneau
-                    // ou on peut décider de l'ajouter à un panneau par défaut.
-                }
             }
         }
-
-
 
         private void FileButton_Click(object sender, EventArgs e)
         {
             if (sender is Button button)
             {
                 string filePath = button.Tag as string;
-                if (filePath != null)
+
+                // Vérification du type de fichier
+                if (filePath.EndsWith(".rdp"))
+                {
+                    string fileName = Path.GetFileNameWithoutExtension(filePath);  // Récupérer le nom du fichier
+                    string rdsFileName = fileName.Substring(4); // Retirer "RDS-"
+
+                    // Vérifier si les informations sont stockées dans le fichier JSON
+                    string jsonFilePath = @"C:\Application\Clients\rdsaccount.json"; // Chemin du fichier JSON
+                    RdsData.LoadRdsAccounts(jsonFilePath);  // Charger les comptes RDS depuis le fichier JSON
+
+                    // Rechercher les informations de connexion en fonction de la description
+                    var credentials = RdsData.RdsAccounts.FirstOrDefault(a => a.Description.Equals(rdsFileName, StringComparison.OrdinalIgnoreCase));
+
+                    if (credentials != null)
+                    {
+                        // Récupérer les informations
+                        string ip = credentials.IpDns;
+                        string user = credentials.NomUtilisateur;
+                        string password = credentials.MotDePasse;
+                        string decryptpasswd = EncryptionHelper.Decrypt(password);
+
+                        // Créer les informations d'identification
+                        CreateCredentials(ip, user, decryptpasswd);
+
+                        // Demander à l'utilisateur s'il souhaite utiliser un ou plusieurs moniteurs
+                        string mon = PromptForMultiMonitor();
+
+                        if (mon == "Non")
+                        {
+                            // Connecter MSTSC pour un seul écran
+                            StartRds(ip);
+                        }
+                        else if (mon == "Oui")
+                        {
+                            // Connecter MSTSC pour plusieurs écrans
+                            StartRds(ip, true);
+                        }
+
+                        // Supprimer les informations d'identification après la connexion
+                        DeleteCredentials(ip);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Aucune information de connexion enregistrée pour ce fichier RDS.");
+                    }
+                }
+                else if (filePath != null)
                 {
                     Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
                 }
             }
+        }
+
+
+        private void CreateCredentials(string ip, string user, string decryptpasswd)
+        {
+            // Utiliser cmdkey pour créer les informations d'identification
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/C cmdkey /generic:{ip} /user:\"{user}\" /pass:\"{decryptpasswd}\"",
+                CreateNoWindow = true,
+                UseShellExecute = false
+            });
+        }
+
+        private void DeleteCredentials(string ip)
+        {
+            // Supprimer les informations d'identification
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/C cmdkey /delete:TERMSRV/{ip}",
+                CreateNoWindow = true,
+                UseShellExecute = false
+            });
+        }
+
+        private string PromptForMultiMonitor()
+        {
+            // Afficher une boîte de dialogue pour demander si l'utilisateur souhaite un ou plusieurs moniteurs
+            string mon = "";
+            DialogResult result = MessageBox.Show("Multi-moniteur Oui ou Non ?", "Choix d'écran", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                mon = "Oui";
+            }
+            else
+            {
+                mon = "Non";
+            }
+
+            return mon;
+        }
+
+        private void StartRds(string ip, bool multiMonitor = false)
+        {
+            // Lancer MSTSC pour se connecter au bureau à distance avec ou sans plusieurs moniteurs
+            string arguments = $"/v:{ip}";
+            if (multiMonitor)
+            {
+                arguments += " /multimon"; // Option pour plusieurs moniteurs
+            }
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "mstsc.exe",
+                Arguments = arguments,
+                UseShellExecute = true
+            });
+        }
+
+        // Méthode pour charger les informations d'identification depuis le fichier
+        private void LoadRdsCredentials()
+        {
+            string filePath = Path.Combine(Application.StartupPath, "RdsCredentials.txt");
+
+            if (File.Exists(filePath))
+            {
+                var lines = File.ReadAllLines(filePath);
+                foreach (var line in lines)
+                {
+                    var parts = line.Split(',');
+
+                    if (parts.Length == 4)
+                    {
+                        string fileName = parts[0];
+                        string ip = parts[1];
+                        string user = parts[2];
+                        string password = parts[3];
+
+                        rdsCredentials[fileName] = (ip, user, password);
+                    }
+                }
+            }
+        }
+
+        private void SaisirRdsButton_Click(object sender, EventArgs e)
+        {
+            SaisieRdsForm saisieForm = new SaisieRdsForm();  // Crée une nouvelle instance de SaisieRdsForm
+            saisieForm.Show();  // Affiche le formulaire
+        }
+
+        private void VisualiserRdsButton_Click(object sender, EventArgs e)
+        {
+            VisualiserRdsForm visualiserForm = new VisualiserRdsForm();  // Crée une nouvelle instance de VisualiserRdsForm
+            visualiserForm.Show();  // Affiche le formulaire
         }
     }
 }
