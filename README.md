@@ -2,7 +2,8 @@
 
 ## Description
 
-![acces_client](https://github.com/user-attachments/assets/82554cf5-9aac-4afa-8c25-f010dab3bf19)
+![acces_client](https://github.com/user-attachments/assets/be7786d3-d772-4ac7-94c3-0c50d829f329)
+
 
 Accès Client est une application Windows Forms en C# qui permet de gérer des fichiers situés dans différents répertoires. L'application charge les fichiers à partir d'un répertoire spécifié et les organise en catégories (Any, RDS, VPN) selon leur nom. Les fichiers sont affichés dans des boutons interactifs, et lorsque l'utilisateur clique sur un bouton, le fichier correspondant est ouvert avec l'application par défaut de Windows.
 
