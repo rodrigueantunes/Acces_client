@@ -46,7 +46,7 @@
             this.labelNomRds.Name = "labelNomRds";
             this.labelNomRds.Size = new System.Drawing.Size(58, 13);
             this.labelNomRds.TabIndex = 0;
-            this.labelNomRds.Text = "Nom RDS :";
+            this.labelNomRds.Text = "Nom connexion :";
             // 
             // labelIpDns
             // 
@@ -127,7 +127,7 @@
             this.Controls.Add(this.labelIpDns);
             this.Controls.Add(this.labelNomRds);
             this.Name = "SaisieRdsForm";
-            this.Text = "Saisie RDS";
+            this.Text = "Saisie - Compte de connexion";
             this.ResumeLayout(false);
             this.PerformLayout();
         }

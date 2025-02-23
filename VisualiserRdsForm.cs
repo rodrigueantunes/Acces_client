@@ -41,7 +41,7 @@ namespace Accès_client
             }
             else
             {
-                MessageBox.Show("Aucun compte RDS trouvé.");
+                MessageBox.Show("Aucun compte trouvé.");
             }
         }
 
@@ -73,7 +73,7 @@ namespace Accès_client
             // Vérifier si un élément est sélectionné
             if (listViewRds.SelectedItems.Count == 0)
             {
-                MessageBox.Show("Veuillez sélectionner un compte RDS à modifier.");
+                MessageBox.Show("Veuillez sélectionner un compte à modifier.");
                 return;
             }
 
@@ -109,7 +109,7 @@ namespace Accès_client
             // Vérifier si un élément est sélectionné
             if (listViewRds.SelectedItems.Count == 0)
             {
-                MessageBox.Show("Veuillez sélectionner un compte RDS à supprimer.");
+                MessageBox.Show("Veuillez sélectionner un compte à supprimer.");
                 return;
             }
 
@@ -122,7 +122,7 @@ namespace Accès_client
             if (account != null)
             {
                 // Confirmer la suppression
-                var result = MessageBox.Show("Êtes-vous sûr de vouloir supprimer ce compte RDS ?", "Confirmation", MessageBoxButtons.YesNo);
+                var result = MessageBox.Show("Êtes-vous sûr de vouloir supprimer ce compte ?", "Confirmation", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
                     // Supprimer le compte de la liste

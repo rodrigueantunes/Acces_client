@@ -5,6 +5,12 @@ using System.IO;
 using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Net;
+using System.Threading.Channels;
+using System.Threading;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace Accès_client
 {
@@ -19,7 +25,88 @@ namespace Accès_client
             LoadDirectories();
            
         }
+        public class FortiClientVpnConnection
+        {
+            // Constants for FortiClient API
+            private const string FORTICLIENT_DLL = "FORTICLIENT.dll";
+            private const int FCTAPI_SUCCESS = 0;
 
+            // API Function imports
+            [DllImport(FORTICLIENT_DLL)]
+            private static extern int FCT_Initialize();
+
+            [DllImport(FORTICLIENT_DLL)]
+            private static extern int FCT_Connect(string vpnName, string server, string username, string password);
+
+            [DllImport(FORTICLIENT_DLL)]
+            private static extern int FCT_GetStatus();
+
+            [DllImport(FORTICLIENT_DLL)]
+            private static extern int FCT_Disconnect();
+
+            [DllImport(FORTICLIENT_DLL)]
+            private static extern void FCT_Cleanup();
+
+            public async Task<bool> ConnectToVPN(string vpnName, string server, string username, string password)
+            {
+                try
+                {
+                    // Initialize FortiClient API
+                    int result = FCT_Initialize();
+                    if (result != FCTAPI_SUCCESS)
+                    {
+                        throw new Exception($"Failed to initialize FortiClient API. Error code: {result}");
+                    }
+
+                    // Attempt to connect
+                    result = FCT_Connect(vpnName, server, username, password);
+                    if (result != FCTAPI_SUCCESS)
+                    {
+                        throw new Exception($"Failed to connect to VPN. Error code: {result}");
+                    }
+
+                    // Wait for connection to establish
+                    bool connected = await WaitForConnection();
+                    return connected;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error connecting to VPN: {ex.Message}");
+                    return false;
+                }
+            }
+
+            private async Task<bool> WaitForConnection(int timeoutSeconds = 30)
+            {
+                int attempts = 0;
+                while (attempts < timeoutSeconds)
+                {
+                    int status = FCT_GetStatus();
+                    if (status == 1) // 1 typically indicates connected status
+                    {
+                        return true;
+                    }
+                    await Task.Delay(1000);
+                    attempts++;
+                }
+                return false;
+            }
+
+            public bool DisconnectFromVPN()
+            {
+                try
+                {
+                    int result = FCT_Disconnect();
+                    FCT_Cleanup();
+                    return result == FCTAPI_SUCCESS;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error disconnecting from VPN: {ex.Message}");
+                    return false;
+                }
+            }
+        }
         public static class Prompt
     {
         public static string ShowDialog(string text, string caption)
@@ -204,6 +291,7 @@ namespace Accès_client
             if (sender is Button button)
             {
                 string filePath = button.Tag as string;
+                string fileNamenext = Path.GetFileNameWithoutExtension(filePath);
 
                 // Vérification du type de fichier
                 if (filePath.EndsWith(".rdp"))
@@ -212,7 +300,7 @@ namespace Accès_client
                     string rdsFileName = fileName.Substring(4); // Retirer "RDS-"
 
                     // Vérifier si les informations sont stockées dans le fichier JSON
-                    string jsonFilePath = @"C:\Application\Clients\rdsaccount.json"; // Chemin du fichier JSON
+                    string jsonFilePath = @"C:\Application\Clients\rds_accounts.json"; // Chemin du fichier JSON
                     RdsData.LoadRdsAccounts(jsonFilePath);  // Charger les comptes RDS depuis le fichier JSON
 
                     // Rechercher les informations de connexion en fonction de la description
@@ -246,9 +334,40 @@ namespace Accès_client
                         // Supprimer les informations d'identification après la connexion
                         DeleteCredentials(ip);
                     }
+                   
                     else
                     {
-                        MessageBox.Show("Aucune information de connexion enregistrée pour ce fichier RDS.");
+                        MessageBox.Show("Aucune information de connexion enregistrée pour ce fichier ");
+                    }
+                }
+                else if (fileNamenext.StartsWith("VPN-Forti") || fileNamenext.StartsWith("VPN-FORTI") || fileNamenext.StartsWith("VPN-forti"))
+                {
+                    // Vérifier si les informations sont stockées dans le fichier JSON
+                    string jsonFilePath = @"C:\Application\Clients\rds_accounts.json"; // Chemin du fichier JSON
+                    RdsData.LoadRdsAccounts(jsonFilePath);  // Charger les comptes RDS depuis le fichier JSON
+
+                    string rdsFileName = fileNamenext.Substring(4); // Retirer "VPN-"
+                    string[] filedec = fileNamenext.Split('-');
+                    // Rechercher les informations de connexion en fonction de la description
+                    var credentials = RdsData.RdsAccounts.FirstOrDefault(a => a.Description.Equals("tonnellier", StringComparison.OrdinalIgnoreCase)&& a.NomUtilisateur.StartsWith(filedec[3], StringComparison.OrdinalIgnoreCase));
+
+                    if (credentials != null)
+                    {
+                        // Récupérer les informations
+                        string ip = credentials.IpDns;
+                        string user = credentials.NomUtilisateur;
+                        string password = credentials.MotDePasse;
+                        string vpn = credentials.Description;
+                        string decryptpasswd = EncryptionHelper.Decrypt(password);
+
+                        // Connexion VPN
+
+                        ConnectToFortiClientVPN(vpn, ip, user, password, filePath);
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Aucune information de connexion enregistrée pour ce fichier VPN");
                     }
                 }
                 else if (filePath != null)
@@ -257,6 +376,24 @@ namespace Accès_client
                 }
             }
         }
+
+
+        async Task ConnectToFortiClientVPN(string vpn, string ip, string user, string decryptpasswd, string filePath)
+        {
+            var vpnConnection = new FortiClientVpnConnection();
+            bool connected = await vpnConnection.ConnectToVPN(vpn, ip, user, decryptpasswd);
+
+            if (connected)
+            {
+                MessageBox.Show("Connexion VPN établie avec succès");
+            }
+            else
+            {
+                MessageBox.Show("Échec de la connexion VPN / Ouverture de Forticlient Manuelle");
+                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+            }
+        }
+
 
 
         private void CreateCredentials(string ip, string user, string decryptpasswd)

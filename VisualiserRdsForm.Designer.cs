@@ -84,7 +84,7 @@
             this.Controls.Add(this.buttonModifier);
             this.Controls.Add(this.listViewRds);
             this.Name = "VisualiserRdsForm";
-            this.Text = "Visualiser RDS";
+            this.Text = "Visualiser Compte de connexion";
             this.ResumeLayout(false);
         }
     }

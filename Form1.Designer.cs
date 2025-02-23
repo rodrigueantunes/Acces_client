@@ -154,7 +154,7 @@
             visualiserRdsButton.Name = "visualiserRdsButton";
             visualiserRdsButton.Size = new Size(214, 40);
             visualiserRdsButton.TabIndex = 13;
-            visualiserRdsButton.Text = "Gestion Compte RDS";
+            visualiserRdsButton.Text = "Gestion Connexion";
             visualiserRdsButton.UseVisualStyleBackColor = false;
             visualiserRdsButton.Click += VisualiserRdsButton_Click;
             // 
